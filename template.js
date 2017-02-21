@@ -3,8 +3,8 @@
  */
  
  module.exports = {
-	 render: render
-	 loadDir: loaddir
+	 render: render,
+	 loadDir: loadDir
  }
  
  var fs = require('fs');
@@ -15,14 +15,14 @@
   * @param {string} directory - the directory to load
   */
  function loadDir(directory){
-	 var dir = fs.readirSync(directory);
-	 dir.forEach(function(file)){
+	 var dir = fs.readdirSync(directory);
+	 dir.forEach(function(file){
 		 var path = directory + '/' + file;
-		 var stats = fs.statSync(file);
+		 var stats = fs.statSync(path);
 		 if (stats.isFile()){
 			 templates[file] = fs.readFileSync(path).toString();
 		 }
-	 }
+	 });
  }
  
  /** @function render

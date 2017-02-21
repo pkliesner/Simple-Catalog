@@ -1,3 +1,5 @@
 img {
-  width: 250px;
+  width: 200px;
+  border-style: solid;
+  margin: 15px;
 }
