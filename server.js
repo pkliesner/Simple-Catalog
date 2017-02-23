@@ -21,6 +21,60 @@ var stylesheet = fs.readFileSync('gallery.css');
 /* load templates */
  template.loadDir('templates');
 
+//////////////////////////////////////////////////////
+/** @function getCatalogNames
+ * Retrieves the filenames for all JSON files in the /catalog directory 
+ * and supplies them to the callback.
+ * @param {function} callback - function that takes an error and array of 
+ * filenames as parameters
+ */
+function getCatalogNames(callback) {
+  fs.readdir('catalog/', function(err, fileNames){
+    if(err) callback(err, undefined);
+    else callback(false, fileNames);
+  });
+}
+
+///////////////////////////////////////////////////////
+/** @function catalogNamesToTags
+ * Helper function that takes an array of catalog filenames, and returns
+ * an array of HTML img tags build using those names.
+ * @param {string[]} filenames - the image filenames
+ * @param {function} callback - function that takes the array of tags as a parameter
+ * @return {string[]} an array of HTML json tags
+ */
+function catalogNamesToTags(fileNames, callback) {
+  var tags = new Array;
+  var name;
+  var catalogData;
+  var timesRemaining = filenames.length;
+ 
+  fileNames.forEach(function(callback) {
+    catalogData = JSON.parse(fs.readFile(this));
+
+    while(timesRemaining > 0){
+      tags.push(`<a href="${catalogData.imageName}"><img src="${catalogData.imageName}" alt="${catalogData.imageName}"></a>`);
+
+      timesRemaining = timesRemaining - 1;
+    }
+    return calllback(tags);
+  });
+}
+
+///////////////////////////////////////////////////////
+/**
+ * @function buildDetail
+ * A helper function to build an HTML string of a detail webpage.
+ * @param {string[]} catalogTags - the HTML for the individual JSON images.
+ */
+function buildDetail(catalogTags) {
+  return template.render('detail.html', {
+	  imageName: catalogTags.imageName,
+    title: catalogTags.title,
+    description: catalogTags.description,
+  });
+}
+
 /** @function getImageNames
  * Retrieves the filenames for all images in the
  * /images directory and supplies them to the callback.
@@ -43,7 +97,7 @@ function getImageNames(callback) {
  */
 function imageNamesToTags(fileNames) {
   return fileNames.map(function(fileName) {
-    return `<img src="${fileName}" alt="${fileName}">`;
+    return `<a href="FILENAME"><img src="${fileName}" alt="${fileName}"></a>`;
   });
 }
 
@@ -58,6 +112,26 @@ function buildGallery(imageTags) {
   return template.render('gallery.html', {
 	  title: config.title,
 	  imageTags: imageNamesToTags(imageTags).join("")
+  });
+}
+
+/////////////////////////////////////////////////////////////
+/** @function serveDetail
+ * A function to serve a HTML page representing a detailed page of an image.
+ * @param {http.incomingRequest} req - the request object
+ * @param {http.serverResponse} res - the response object
+ */
+function serveDetail(req, res) {
+  getCatalogNames(function(err, imageNames){
+    if(err) {
+      console.error(err);
+      res.statusCode = 500;
+      res.statusMessage = 'Server error';
+      res.end();
+      return;
+    }
+    res.setHeader('Content-Type', 'text/html');
+    res.end(buildDetail(imageNames));
   });
 }
 
@@ -155,6 +229,13 @@ function handleRequest(req, res) {
     case '/gallery':
       if(req.method == 'GET') {
         serveGallery(req, res);
+      } else if(req.method == 'POST') {
+        uploadImage(req, res);
+      }
+      break;
+    case '/detail':
+      if(req.method == 'GET') {
+        serveDetail(req, res);
       } else if(req.method == 'POST') {
         uploadImage(req, res);
       }

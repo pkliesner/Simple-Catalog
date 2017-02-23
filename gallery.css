@@ -1,5 +1,6 @@
 img {
   width: 200px;
   border-style: solid;
+  border-color: black;
   margin: 15px;
 }
