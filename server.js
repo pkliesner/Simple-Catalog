@@ -50,12 +50,14 @@ function catalogNamesToTags(fileNames, callback) {
   var timesRemaining = filenames.length;
  
   fileNames.forEach(function(callback) {
+    //Read in the current JSON file
     catalogData = JSON.parse(fs.readFile(this));
 
     while(timesRemaining > 0){
+      //Create the tag for the current file and push it onto the array
       tags.push(`<a href="${catalogData.imageName}"><img src="${catalogData.imageName}" alt="${catalogData.imageName}"></a>`);
-
-      timesRemaining = timesRemaining - 1;
+      
+      timesRemaining = timesRemaining - 1; //Decrements the counter to know when to leave
     }
     return calllback(tags);
   });
@@ -97,7 +99,7 @@ function getImageNames(callback) {
  */
 function imageNamesToTags(fileNames) {
   return fileNames.map(function(fileName) {
-    return `<a href="FILENAME"><img src="${fileName}" alt="${fileName}"></a>`;
+    return `<a href="detail/${fileName}"><img src="${fileName}" alt="${fileName}"></a>`;
   });
 }
 
