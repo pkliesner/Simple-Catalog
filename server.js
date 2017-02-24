@@ -59,7 +59,7 @@ function catalogNamesToTags(fileNames, callback) {
       
       timesRemaining = timesRemaining - 1; //Decrements the counter to know when to leave
     }
-    return calllback(tags);
+    return callback(tags);
   });
 }
 
@@ -67,13 +67,16 @@ function catalogNamesToTags(fileNames, callback) {
 /**
  * @function buildDetail
  * A helper function to build an HTML string of a detail webpage.
- * @param {string[]} catalogTags - the HTML for the individual JSON images.
+ * @param {string[]} data - the HTML for the individual JSON image.
  */
-function buildDetail(catalogTags) {
+function buildDetail(data) {
+  //var jsonData = JSON.parse(fs.readFile(data));
+
   return template.render('detail.html', {
-	  imageName: catalogTags.imageName,
-    title: catalogTags.title,
-    description: catalogTags.description,
+	  imageName: data.imageName,
+    title: data.title,
+    description: data.description,
+    imageTag: `<a href="${data.imageName}"><img src="${data.imageName}" alt="${data.imageName}"></a>`
   });
 }
 
@@ -94,7 +97,7 @@ function getImageNames(callback) {
  * Helper function that takes an array of image
  * filenames, and returns an array of HTML img
  * tags build using those names.
- * @param {string[]} filenames - the image filenames
+ * @param {string[]} fileNames - the image filenames
  * @return {string[]} an array of HTML img tags
  */
 function imageNamesToTags(fileNames) {
@@ -120,11 +123,15 @@ function buildGallery(imageTags) {
 /////////////////////////////////////////////////////////////
 /** @function serveDetail
  * A function to serve a HTML page representing a detailed page of an image.
+ * @param {string} filename - the filename
  * @param {http.incomingRequest} req - the request object
  * @param {http.serverResponse} res - the response object
  */
-function serveDetail(req, res) {
-  getCatalogNames(function(err, imageNames){
+function serveDetail(filename, req, res) {
+  var splitFileName = filename.split('.');
+  var newFileName = 'catalog/' + splitFileName[0] + '.json';
+
+  fs.readFile(newFileName, function(err, data){
     if(err) {
       console.error(err);
       res.statusCode = 500;
@@ -133,7 +140,7 @@ function serveDetail(req, res) {
       return;
     }
     res.setHeader('Content-Type', 'text/html');
-    res.end(buildDetail(imageNames));
+    res.end(buildDetail(JSON.parse(data)));
   });
 }
 
@@ -235,19 +242,21 @@ function handleRequest(req, res) {
         uploadImage(req, res);
       }
       break;
-    case '/detail':
-      if(req.method == 'GET') {
-        serveDetail(req, res);
-      } else if(req.method == 'POST') {
-        uploadImage(req, res);
-      }
-      break;
     case '/gallery.css':
       res.setHeader('Content-Type', 'text/css');
       res.end(stylesheet);
       break;
     default:
-      serveImage(req.url, req, res);
+      //////////////////////////////////////////////
+      var pathName = urlParts.pathname;
+      var pathParts = pathName.split('/');
+      var fileName = pathParts[2];
+
+      //pathParts[0] is an empty string caused by the leading '/'
+      if(pathParts[1] == 'detail'){
+        serveDetail(fileName, req, res);
+      }  
+      else serveImage(req.url, req, res);
   }
 }
 

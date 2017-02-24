@@ -5,16 +5,16 @@
     <link href="gallery.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-	<h1><%= context.title %></h1>
+	  <h1><%= context.title %></h1>
 	
-	<%= context.imageTags %>
-	<form action="" method="POST" enctype="multipart/form-data">
-	  <input type="file" name="image">
-	  Name: 
-	  <input type="text" name="title">
-	  Description:
-	  <input type="text" name="title">
-	  <input type="submit" value="Upload Image">
-	</form>
+	  <%= context.imageTags %>
+	  <form action="" method="POST" enctype="multipart/form-data">
+	    <input type="file" name="image">
+	    Name: 
+	    <input type="text" name="title">
+	    Description:
+	    <input type="text" name="title">
+	    <input type="submit" value="Upload Image">
+	  </form>
   </body>
 </html>
