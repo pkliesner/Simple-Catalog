@@ -70,8 +70,6 @@ function catalogNamesToTags(fileNames, callback) {
  * @param {string[]} data - the HTML for the individual JSON image.
  */
 function buildDetail(data) {
-  //var jsonData = JSON.parse(fs.readFile(data));
-
   return template.render('detail.html', {
 	  imageName: data.imageName,
     title: data.title,
