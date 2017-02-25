@@ -36,14 +36,14 @@ function getCatalogNames(callback) {
 }
 
 ///////////////////////////////////////////////////////
-/** @function catalogNamesToTags
+/** @function oldCatalogNamesToTags
  * Helper function that takes an array of catalog filenames, and returns
  * an array of HTML img tags build using those names.
  * @param {string[]} filenames - the image filenames
  * @param {function} callback - function that takes the array of tags as a parameter
  * @return {string[]} an array of HTML json tags
  */
-function catalogNamesToTags(fileNames, callback) {
+function oldCatalogNamesToTags(fileNames, callback) {
   var tags = new Array;
   var name;
   var catalogData;
@@ -67,15 +67,11 @@ function catalogNamesToTags(fileNames, callback) {
 /**
  * @function buildDetail
  * A helper function to build an HTML string of a detail webpage.
- * @param {string[]} data - the HTML for the individual JSON image.
+ * @param {string} imageTag - the filename in a string
+ * @param {object} data - the JSON data in an object.
  */
-function buildDetail(data) {
-  return template.render('detail.html', {
-	  imageName: data.imageName,
-    title: data.title,
-    description: data.description,
-    imageTag: `<a href="${data.imageName}"><img src="${data.imageName}" alt="${data.imageName}"></a>`
-  });
+function buildDetail(imageTag, data) {
+  return template.render('detail.html', data);
 }
 
 /** @function getImageNames
@@ -112,9 +108,10 @@ function imageNamesToTags(fileNames) {
  * gallery images.
  */
 function buildGallery(imageTags) {
+  var newTags = imageNamesToTags(imageTags).join("");
   return template.render('gallery.html', {
 	  title: config.title,
-	  imageTags: imageNamesToTags(imageTags).join("")
+	  imageTags: newTags
   });
 }
 
@@ -138,7 +135,7 @@ function serveDetail(filename, req, res) {
       return;
     }
     res.setHeader('Content-Type', 'text/html');
-    res.end(buildDetail(JSON.parse(data)));
+    res.end(buildDetail(filename, JSON.parse(data)));    
   });
 }
 
@@ -252,8 +249,20 @@ function handleRequest(req, res) {
 
       //pathParts[0] is an empty string caused by the leading '/'
       if(pathParts[1] == 'detail'){
-        serveDetail(fileName, req, res);
-      }  
+        switch(pathParts[2]){
+          case "images":
+            serveImage(pathParts[3], req, res);
+            break;
+          case 'gallery.css':
+            res.setHeader('Content-Type', 'text/css');
+            res.end(stylesheet);
+            break;
+          case 'gallery.json':
+          break;
+          default:
+            serveDetail(fileName, req, res);
+        }
+      }
       else serveImage(req.url, req, res);
   }
 }

@@ -1,6 +1,14 @@
+
+html {  
+  font-family: calibri;
+  font-size: 18pt;
+  color: white;
+  background-color: #0f1928;
+}
+
 img {
   width: 200px;
   border-style: solid;
-  border-color: black;
+  border-color: white;
   margin: 15px;
 }
