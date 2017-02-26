@@ -16,52 +16,10 @@ var port = 3000;
 /* load cached files */
 var config = JSON.parse(fs.readFileSync('config.json'));
 var stylesheet = fs.readFileSync('gallery.css');
-
+var detailStylesheet = fs.readFileSync('details.css');
 
 /* load templates */
  template.loadDir('templates');
-
-//////////////////////////////////////////////////////
-/** @function getCatalogNames
- * Retrieves the filenames for all JSON files in the /catalog directory 
- * and supplies them to the callback.
- * @param {function} callback - function that takes an error and array of 
- * filenames as parameters
- */
-function getCatalogNames(callback) {
-  fs.readdir('catalog/', function(err, fileNames){
-    if(err) callback(err, undefined);
-    else callback(false, fileNames);
-  });
-}
-
-///////////////////////////////////////////////////////
-/** @function oldCatalogNamesToTags
- * Helper function that takes an array of catalog filenames, and returns
- * an array of HTML img tags build using those names.
- * @param {string[]} filenames - the image filenames
- * @param {function} callback - function that takes the array of tags as a parameter
- * @return {string[]} an array of HTML json tags
- */
-function oldCatalogNamesToTags(fileNames, callback) {
-  var tags = new Array;
-  var name;
-  var catalogData;
-  var timesRemaining = filenames.length;
- 
-  fileNames.forEach(function(callback) {
-    //Read in the current JSON file
-    catalogData = JSON.parse(fs.readFile(this));
-
-    while(timesRemaining > 0){
-      //Create the tag for the current file and push it onto the array
-      tags.push(`<a href="${catalogData.imageName}"><img src="${catalogData.imageName}" alt="${catalogData.imageName}"></a>`);
-      
-      timesRemaining = timesRemaining - 1; //Decrements the counter to know when to leave
-    }
-    return callback(tags);
-  });
-}
 
 ///////////////////////////////////////////////////////
 /**
@@ -253,10 +211,11 @@ function handleRequest(req, res) {
           case "images":
             serveImage(pathParts[3], req, res);
             break;
-          case 'gallery.css':
+          case 'details.css':
             res.setHeader('Content-Type', 'text/css');
-            res.end(stylesheet);
+            res.end(detailStylesheet);
             break;
+          case 'details.json':
           case 'gallery.json':
           break;
           default:

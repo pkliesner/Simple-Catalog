@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "poised-cobra.png",
+    "imageTag" : "<a href='images/poised-cobra.png'><img src='images/poised-cobra.png' alt='images/poised-cobra.png'></a>",
     "title" : "Poised Cobra",
     "description" : "Don't move! That poised cobra ready to strike!"
 }}

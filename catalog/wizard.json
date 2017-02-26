@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "wizard.png",
+    "imageTag" : "<a href='images/wizard.png'><img src='images/wizard.png' alt='images/wizard.png'></a>",
     "title" : "Wizard",
     "description" : "A wizard casting his spell!"
 }}

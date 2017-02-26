@@ -1,14 +1,39 @@
 
 html {  
   font-family: calibri;
-  font-size: 18pt;
+  font-size: 16pt;
   color: white;
-  background-color: #0f1928;
+  background-color: #121821;
+}
+
+div#gallery {
+  text-align: center;
+  width: 680px;
+  padding: 10px;
+  margin: 15px;
+  border-radius: 5px;
+  background: #757e8c;
+
+  margin-left: auto; 
+  margin-right: auto;
+}
+
+div#submit {
+  text-align: center;
+  max-width: 680px;
+  padding: 10px;
+  margin: 15px;
+  border-radius: 5px;
+  background: #757e8c;
+
+  margin-left: auto; 
+  margin-right: auto;
 }
 
 img {
   width: 200px;
   border-style: solid;
   border-color: white;
-  margin: 15px;
+  border-radius: 5px;
+  margin: 10px;
 }

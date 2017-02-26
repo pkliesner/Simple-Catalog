@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "ninja.png",
+    "imageTag" : "<a href='images/ninja.png'><img src='images/ninja.png' alt='images/ninja.png'></a>",
     "title" : "Stealthy Ninja",
     "description" : "A stealthy ninja ready to strike!"
 }}

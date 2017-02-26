@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "red-warrior.png",
+    "imageTag" : "<a href='images/red-warrior.png'><img src='images/red-warrior.png' alt='images/red-warrior.png'></a>",
     "title" : "Goofy Warrior",
     "description" : "A goofy red warrior, with a temper!"
 }}

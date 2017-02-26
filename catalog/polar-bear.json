@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "polar-bear.png",
+    "imageTag" : "<a href='images/polar-bear.png'><img src='images/polar-bear.png' alt='images/polar-bear.png'></a>",
     "title" : "Adorable Bear",
     "description" : "How can you not smile at this adorable bear!?"
 }}

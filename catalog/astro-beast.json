@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "astro-beast.png",
+    "imageTag" : "<a href='images/astro-beast.png'><img src='images/astro-beast.png' alt='images/astro-beast.png'></a>",
     "title" : "Astronaut Beast",
     "description" : "A fat happy astronaut devil planting his flag!"
 }}

@@ -2,19 +2,21 @@
 <html>
   <head>
 	<title>Image Detail Page</title>
-    <link href="gallery.css" rel="stylesheet" type="text/css">
+    <link href="details.css" rel="stylesheet" type="text/css">
   </head>
-  <body>
-	  <h1>Image Details</h1>
-    <%= context.image.imageTag %>
 
-	  <p>
+  <body>
+    <div id= "image">
+      <h2>Image Details</h2>
+        <%= context.image.imageTag %>
+	    <p>
         Name: 
         <%= context.image.title %>
-    </p>
-    <p>
+      </p>
+      <p>
         Description: 
         <%= context.image.description %>
-    </p>
+      </p>
+    </div>
   </body>
 </html>

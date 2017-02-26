@@ -1,5 +1,6 @@
 {"image" : {
     "imageName" : "penguin-bee.png",
+    "imageTag" : "<a href='images/penguin-bee.png'><img src='images/penguin-bee.png' alt='images/penguin-bee.png'></a>",
     "title" : "Bee Buddy",
     "description" : "A happy penguin with his buddy!"
 }}
