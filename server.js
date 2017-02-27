@@ -167,6 +167,43 @@ function uploadImage(req, res) {
   });
 }
 
+////////////////////////////////////////////////////
+function uploadJSON(req, res) { 
+  multipart(req, res, function(req, res) {
+    // make sure an title/description were uploaded
+    if(req.body.title == "") {
+      console.error("No title in upload");
+      res.statusCode = 400;
+      res.statusMessage = "No title specified"
+      res.end("No title specified");
+      return;
+    }
+    else if(req.body.description == "") {
+      console.error("No description in upload");
+      res.statusCode = 400;
+      res.statusMessage = "No description specified"
+      res.end("No description specified");
+      return;
+    }
+
+    var iFileName = "images/" + req.body.image.filename;
+    var qFileName = "'" + iFileName + "'";
+    var splitFileName = req.body.image.filename.split('.');
+    fs.writeFile('catalog/' + splitFileName[0] + '.json', 
+      '{"image" : { "imageName" : "' + iFileName + '", "imageTag" : "<a href=' + qFileName + '><img src=' + qFileName + ' alt=' + qFileName + '></a>", "title" : "' + req.body.title + '", "description" : "' + req.body.description +'" }}',
+      function(err){
+      if(err) {
+        console.error(err);
+        res.statusCode = 500;
+        res.statusMessage = "Server Error";
+        res.end("Server Error");
+        return;
+      }
+      //serveGallery(req, res);
+    });
+  });
+}
+
 /** @function handleRequest
  * A function to determine what to do with
  * incoming http requests.
@@ -193,6 +230,7 @@ function handleRequest(req, res) {
         serveGallery(req, res);
       } else if(req.method == 'POST') {
         uploadImage(req, res);
+        uploadJSON(req, res);
       }
       break;
     case '/gallery.css':
